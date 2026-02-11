@@ -45,7 +45,6 @@ MathCAT has several types of contributions, each with different skill requiremen
 |------|--------------|------------|----------------|
 | **Translation** | Fluency in a language + basic YAML | Beginner | [Translator Guide](docs/helpers.md#language-translators) |
 | **Braille code** | Knowledge of a braille math code + YAML | Intermediate | [Braille Guide](docs/helpers.md#braille-translators) |
-| **Tests** | Basic Rust syntax (copy/modify existing tests) | Beginner | [Testing section](#adding-tests) |
 | **YAML rules** | Understanding of MathCAT's rule engine | Intermediate | [Rule format docs](docs/helpers.md#the-basic-parts-of-a-speech-rule) |
 | **Rust code** | Rust programming | Advanced | [Developer Guide](docs/developers.md) |
 | **Documentation** | Clear writing | Beginner | This file + `docs/` directory |
@@ -90,34 +89,6 @@ uv run --project PythonScripts audit-translations es         # audit Spanish
 ```
 
 For the full translator guide, see [docs/helpers.md](docs/helpers.md#language-translators).
-
-### Adding Tests
-
-More tests are always welcome. MathCAT's test infrastructure verifies that MathML input produces expected speech and braille output.
-
-**Where tests live:** `tests/` directory, organized by language and speech style.
-
-**A typical test looks like:**
-
-```rust
-#[test]
-fn common_fraction_half() {
-    let expr = "<math>
-                    <mfrac> <mn>1</mn> <mn>2</mn> </mfrac>
-                </math>";
-    test("en", "SimpleSpeak", expr, "1 half");
-}
-```
-
-**To add a test:**
-1. Find the relevant test file in `tests/` (organized by language and topic).
-2. Add a new test function following the existing pattern.
-3. Run `cargo test your_test_name` to verify it passes.
-
-Good candidates for new tests:
-- Edge cases you discover while using MathCAT
-- MathML patterns that produce unexpected speech
-- Coverage for rules that don't have tests yet (see [test coverage](docs/developers.md#test-coverage) for how to check)
 
 ### YAML Rule Changes
 
