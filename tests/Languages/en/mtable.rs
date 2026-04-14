@@ -1066,6 +1066,16 @@ fn mtable_prefix_op() -> Result<()>{
     Ok(())
 }
 
+#[test]
+fn mtable_blank_op() -> Result<()>{
+    // When a table is prefixed with a blank operator, still assume array intent
+    let expr = "<math>
+        <mo>\u{2062}</mo><mtable><mtr><mtd><mn>3</mn></mtd></mtr><mtr><mtd><mn>2</mn></mtd></mtr></mtable>
+    </math>";
+    test("en", "ClearSpeak", expr, "; table with 2 rows and 1 column; row 1; column 1; 3; row 2; column 1; 2")
+}
+
+
 
 #[test]
 fn mtable_colspan_table() -> Result<()>{
