@@ -1502,14 +1502,11 @@ impl CountTableDims {
             // Other elements should be ignored.
             let row_name = name(row);
 
-            let row_type = if row_name == "mlabeledtr" {
-                CTDRowType::Labeled
-            } else if row_name == "mtr" {
-                CTDRowType::Normal
-            } else if row_name == "mtd" {
-                CTDRowType::Implicit
-            } else {
-                continue;
+            let row_type = match row_name {
+		"mlabeledtr" => CTDRowType::Labeled,
+		"mtr" => CTDRowType::Normal,
+		"mtd" => CTDRowType::Implicit,
+		_ => continue
             };
 
             let ext_cols = self.next_row();
@@ -1553,7 +1550,12 @@ impl CountTableDims {
         let element = args.pop_nodeset()?;
         let node = validate_one_node(element, fn_name)?;
         if let Node::Element(e) = node {
-            return self.count_table_dims(e);
+            if is_tag(e, "mtable") {
+                return self.count_table_dims(e);
+            } else {
+                return Err(Error::Other(format!("Input element was a <{}>, not an <mtable>",
+                                                e.name().local_part())));
+            }
         }
 
         Err( Error::Other("Could not count dimensions of non-Element.".to_string()) )
