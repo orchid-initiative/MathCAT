@@ -1222,3 +1222,20 @@ fn single_line_with_label() -> Result<()> {
       expr, "1 equation, with label 2; b equals 2")?;
     return Ok(());
   }
+
+#[test]
+fn single_line_with_label_no_say_parens() -> Result<()> {
+  let expr = r#"<math>
+  <mtable class="gather" displaystyle="true" intent=":system-of-equations">
+    <mlabeledtr>
+      <mtd intent=":equation-label"> <mtext>(2)</mtext> </mtd>
+      <mtd><mrow><mo>(</mo><mn>2</mn><mi>b</mi><mo>)</mo></mrow></mtd>
+    </mlabeledtr>
+  </mtable>
+  </math>"#;
+  test_prefs("en", "ClearSpeak", vec![("Verbosity", "Terse")],
+      expr, "1 line, with label 2; open paren; 2 b; close paren")?;
+  test_prefs("en", "SimpleSpeak", vec![("Verbosity", "Terse")],
+      expr, "1 equation, with label 2; open paren; 2 b; close paren")?;
+    return Ok(());
+  }

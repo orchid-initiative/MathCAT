@@ -21,11 +21,6 @@ pub fn mml_to_string(e: Element) -> String {
 /// Pretty-print the MathML represented by `element`.
 /// * `indent` -- the amount of indentation to start with
 pub fn format_element(e: Element, indent: usize) -> String {
-    // let namespace = match e.name().namespace_uri() {
-    //     None => "".to_string(),
-    //     Some(prefix) => prefix.to_string() + ":",
-    // };
-    // let namespace = namespace.as_str();
     let namespace = "";
     let mut answer = format!("{:in$}<{ns}{name}{attrs}>", " ", in=2*indent, ns=namespace, name=e.name().local_part(), attrs=format_attrs(&e.attributes()));
     let children = e.children();
@@ -37,11 +32,6 @@ pub fn format_element(e: Element, indent: usize) -> String {
                 .collect::<Vec<&str>>()
                 .join("");
         return format!("{}{}</{}{}>\n", answer, &handle_special_chars(&content), namespace, e.name().local_part());
-        // for child in children {
-        //     if let ChildOfElement::Text(t) = child {
-        //         return format!("{}{}</{}{}>\n", answer, &make_invisible_chars_visible(t.text()), namespace, e.name().local_part());
-        //     }
-        // };
     } else {
        answer += "\n";        // tag with children should start on new line
         // recurse on each Element child
@@ -52,8 +42,6 @@ pub fn format_element(e: Element, indent: usize) -> String {
         }
     }
     return answer + &format!("{:in$}</{ns}{name}>\n", " ", in=2*indent, ns=namespace, name=e.name().local_part());
-
-    // Use the &#x....; representation for invisible chars when printing
 }
 
 /// Format a vector of attributes as a string with a leading space

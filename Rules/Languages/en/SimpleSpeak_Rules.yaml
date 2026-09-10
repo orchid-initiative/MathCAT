@@ -334,7 +334,7 @@
   tag: mrow
   match:
   - "parent::*[not(self::m:msup) and not(self::m:msub) and not(self::m:msubsup) and not(self::m:power) and"
-  - "          not(self::m:math) ] and "       # rule out [x] standing alone
+  - "          not(self::m:math) and not(self::m:mtd)] and"       # rule out [x] standing alone
   - "( IsBracketed(., '(', ')') or IsBracketed(., '[', ']') ) and "
   - "( IsNode(*[2], 'simple')  ) and"
   - "not(preceding-sibling::*[1][.='\u2062' and @data-function-guess]) and"

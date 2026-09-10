@@ -746,7 +746,7 @@
   tag: mrow
   match:
   - "parent::*[not(self::m:msup) and not(self::m:msub) and not(self::m:msubsup) and not(self::m:power) and"
-  - "          not(self::m:math) ] and "       # rule out [x] standing alone
+  - "          not(self::m:math) and not(self::m:mtd)] and"       # rule out [x] standing alone
   - "( IsBracketed(., '(', ')') or IsBracketed(., '[', ']') ) and "
   - "not( $ClearSpeak_Functions = 'None' and "
   - "     (preceding-sibling::*[1][.='⁡'] or following-sibling::*[1][.='⁡']) ) and "
@@ -759,6 +759,24 @@
   #   (either by the Ordinal preference or by the default rules)'
   replace:
   - x: "*[2]"
+
+- name: no-say-parens-equation-label
+  tag: mrow
+  match:
+  - "ancestor::m:mtd[1][contains(@data-intent-property, ':literal:')] and"       # rule out [x] standing alone
+  - "( IsBracketed(., '(', ')') or IsBracketed(., '[', ']') ) and "
+  - "not( $ClearSpeak_Functions = 'None' and "
+  - "     (preceding-sibling::*[1][.='⁡'] or following-sibling::*[1][.='⁡']) ) and "
+  - "not( $ClearSpeak_ImpliedTimes = 'None' and "
+  - "     (preceding-sibling::*[1][.='⁢'] or following-sibling::*[1][.='⁢']) ) and "
+  - "IsNode(*[2], 'simple') and"
+  - "not(preceding-sibling::*[1][.='\u2062' and @data-function-guess]) and"
+  - "not(ancestor-or-self::*[contains(@data-intent-property, ':literal:')])"
+  # missing clause: 'a positive fraction that is spoken as an ordinal
+  #   (either by the Ordinal preference or by the default rules)'
+  replace:
+  - x: "*[2]"
+
 
 - include: "SharedRules/geometry.yaml"
 - include: "SharedRules/linear-algebra.yaml"
